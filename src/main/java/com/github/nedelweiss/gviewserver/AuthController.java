@@ -33,8 +33,8 @@ public class AuthController {
 
     @GetMapping("/auth/code")
     public ResponseEntity<?> code(@RequestParam String secret) {
-        return secret.equals(SECRET)
-            ? ResponseEntity.ok(new CodeDto(code.code()))
+        return secret.equals(code.getSecret())
+            ? ResponseEntity.ok(new CodeDto(code.getCode()))
             : ResponseEntity.badRequest().body(INVALID_SECRET_MESSAGE);
     }
 
