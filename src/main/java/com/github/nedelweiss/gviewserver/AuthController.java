@@ -3,7 +3,6 @@ package com.github.nedelweiss.gviewserver;
 import lombok.NonNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,15 +18,15 @@ public class AuthController {
 
     private Code code;
 
-    @PostMapping("/auth/redirect")
+    @GetMapping("/auth/redirect")
     public ResponseEntity<String> redirect(
         @NonNull @RequestParam String code,
-        @NonNull @RequestParam String secret
+        @NonNull @RequestParam() String state
     ) {
-        if (!secret.equals(SECRET)) {
+        if (!state.equals(SECRET)) {
             return ResponseEntity.badRequest().body(INVALID_SECRET_MESSAGE);
         } else {
-            this.code = new Code(code, secret);
+            this.code = new Code(code, state);
             return ResponseEntity.ok(SUCCESS_MESSAGE);
         }
     }
